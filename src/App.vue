@@ -1,27 +1,35 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+<template lang="pug">
+Carousel(:options="carouselOptions")/
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { defineComponent } from 'vue'
+import Carousel from './components/Carousel.vue'
 
 export default defineComponent({
   name: 'App',
+  setup() {
+    const carouselOptions = {
+      gap: 10,
+      infinite: true,
+      // data: ['First', 'Second', 'Third', 'Fourth', 'Fifth']
+      data: ['First']
+    }
+
+    return {
+      carouselOptions
+    }
+  },
   components: {
-    HelloWorld
+    Carousel
   }
-});
+})
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 </style>
