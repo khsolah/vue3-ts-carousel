@@ -1,6 +1,6 @@
 <template lang="pug">
 .swiper(ref="swiper")
-  .swiper-wrapper(ref="swiperWrapper" :style="carousel.transitionStyle" @transitionend="carousel.transitionEnd")
+  .swiper-wrapper(ref="swiperWrapper" :style="carousel.transitionStyle" @transitionend="carousel.transitionEnd" @mousedown.prevent="carousel.startDragSlide")
     slot(name="default")
   .swiper-btn.swiper-btn-prev(@click="carousel.slideTo(carousel.activatedIndex - 1)") L
   .swiper-btn.swiper-btn-next(@click="carousel.slideTo(carousel.activatedIndex + 1)") R
@@ -14,14 +14,22 @@ export default defineComponent({
   props: {
     options: Object
   },
-  setup(props) {
-    const carousel = reactive<Carousel>(new Carousel(props.options?.infinite))
+  setup(props, { slots }) {
+    const carousel = reactive<Carousel>(new Carousel(props.options?.infinite, `${props.options?.speed}ms`))
     const swiperWrapper = ref<Document | null>(null)
-    console.log(swiperWrapper)
+    const slideStyle = {
+      'margin-right': `${props.options?.gap}px` || '0'
+    }
+    console.log('slidestyle', slideStyle)
 
     onMounted(() => {
       if (!swiperWrapper.value) return
       const children = swiperWrapper.value.children
+
+      for (let element of children) {
+        element.setAttribute('style', `margin-right: ${props.options?.gap || 0}px`)
+      }
+
       const childrenLength = children.length
       if (props.options?.infinite) {
         swiperWrapper.value.append(children[0].cloneNode(true))
@@ -33,14 +41,15 @@ export default defineComponent({
 
       carousel.init(
         children[0].clientWidth,
-        parseInt(window.getComputedStyle(children[0]).marginRight),
+        props.options?.gap || 0,
         childrenLength + (props.options?.infinite ? 2 : 0)
       )
     })
 
     return {
       carousel,
-      swiperWrapper
+      swiperWrapper,
+      slideStyle
     }
   }
 })
