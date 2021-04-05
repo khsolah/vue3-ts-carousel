@@ -12,7 +12,9 @@ export default defineComponent({
   name: 'App',
   setup() {
     const carouselOptions = {
-      infinite: true
+      infinite: true,
+      gap: 30,
+      speed: 700
     }
 
     const carouselData = ['First-slide', 'Second-slide', 'Third-slide', 'Fourth-slide', 'Fifth-slide']
