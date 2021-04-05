@@ -1,15 +1,14 @@
 <template lang="pug">
 .swiper(ref="swiper")
   .swiper-wrapper(ref="swiperWrapper" :style="carousel.transitionStyle" @transitionend="carousel.transitionEnd")
-    //- slot(name="default")
-    .swiper-slide(v-for="item in 5" :key="item") slide-{{ item }}
+    slot(name="default")
   .swiper-btn.swiper-btn-prev(@click="carousel.slideTo(carousel.activatedIndex - 1)") L
   .swiper-btn.swiper-btn-next(@click="carousel.slideTo(carousel.activatedIndex + 1)") R
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue'
-import { Carousel } from '@/common/Carousel'
+import { Carousel } from '@/utility/Carousel'
 export default defineComponent({
   name: 'Carousel',
   props: {
@@ -58,6 +57,7 @@ export default defineComponent({
   &-wrapper {
     display: flex;
     align-items: center;
+    height: 100%;
     transition-property: transform;
   }
 
